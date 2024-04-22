@@ -17,7 +17,7 @@ class DogListActivity : AppCompatActivity() {
         val binding = ActivityDogListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+yresxyhrexyrexyxutxugcjcjxfjgcjngfckhg
         // val dogList = getFakeDogs()
 
         val dogList = getFakeDogs()
