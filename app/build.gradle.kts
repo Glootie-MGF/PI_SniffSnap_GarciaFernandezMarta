@@ -50,6 +50,12 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     //Glide para cargar imagenes de internet en un imageView (en este caso storage)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    // Retrofit y Moshi
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
     //Para utilizar la galeria de imagenes
     implementation("androidx.activity:activity-ktx:1.8.2")
     //Para autenticación con google aparte del sdk
