@@ -11,22 +11,33 @@ import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogList
 class DogListActivity : AppCompatActivity() {
     private val dogListViewModel : DogListViewModel by viewModels() // Nos permite instanciar el ViewModel
                             // de esta manera porque hemos añadimos la dependencia en gradle de ktx
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityDogListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // val dogList = getFakeDogs()
+
+        val dogList = getFakeDogs()
+
         val recycler = binding.dogRecycler
         recycler.layoutManager = LinearLayoutManager(this)
         val adapter = DogAdapter()
         recycler.adapter = adapter
+
         dogListViewModel.dogList.observe(this){
             dogList -> adapter.submitList(dogList)
         }
         // adapter.submitList(dogList)
     }
 /*    private fun getFakeDogs(): MutableList<Dog> {
+
+        adapter.submitList(dogList)
+    }
+    private fun getFakeDogs(): MutableList<Dog> {
+
         val dogList = mutableListOf<Dog>()
         dogList.add(
             Dog(
@@ -71,5 +82,9 @@ class DogListActivity : AppCompatActivity() {
             )
         )
         return dogList
+
     }*/
+
+    }
+
 }
