@@ -1,16 +1,21 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.doglist;
 
 import com.example.pi_sniffsnap_garciafernandezmarta.Dog;
+import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi.retrofitService
 import kotlinx.coroutines.Dispatchers;
 import kotlinx.coroutines.withContext;
 class DogRepository {
     suspend fun downloadDogs(): List<Dog> {
         return withContext(Dispatchers.IO){
-            getFakeDogs()
+            // getFakeDogs()
+            val dogListApiResponse = retrofitService.getAllDogs()
+            dogListApiResponse.data.dogs
         }
     }
 
-    private fun getFakeDogs(): MutableList<Dog> {
+    // Una vez que funciona la conexión a la API para traer la lista de perros
+    // no nos hace falta la función
+    /*private fun getFakeDogs(): MutableList<Dog> {
         val dogList = mutableListOf<Dog>()
         dogList.add(
             Dog(
@@ -55,6 +60,6 @@ class DogRepository {
             )
         )
         return dogList
-    }
+    }*/
 
 }
