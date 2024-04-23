@@ -1,7 +1,6 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.api
 
 import com.example.pi_sniffsnap_garciafernandezmarta.BASE_URL
-import com.example.pi_sniffsnap_garciafernandezmarta.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.GET_ALL_DOGS_URL
 import com.example.pi_sniffsnap_garciafernandezmarta.api.responses.DogListApiResponse
 import retrofit2.Retrofit

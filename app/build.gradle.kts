@@ -48,6 +48,9 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    // Retrofit y Moshi
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     //Glide para cargar imagenes de internet en un imageView (en este caso storage)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     //Para utilizar la galeria de imagenes
