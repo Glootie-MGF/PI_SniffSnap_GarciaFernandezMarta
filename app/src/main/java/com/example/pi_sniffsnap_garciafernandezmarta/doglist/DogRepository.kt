@@ -14,7 +14,7 @@ class DogRepository {
     }
 
     // Una vez que funciona la conexión a la API para traer la lista de perros
-    // no nos hace falta la función
+    // no nos hace falta la siguiente función
     /*private fun getFakeDogs(): MutableList<Dog> {
         val dogList = mutableListOf<Dog>()
         dogList.add(
