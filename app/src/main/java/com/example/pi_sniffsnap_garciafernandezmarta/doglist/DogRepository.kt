@@ -2,14 +2,16 @@ package com.example.pi_sniffsnap_garciafernandezmarta.doglist;
 
 import com.example.pi_sniffsnap_garciafernandezmarta.Dog;
 import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi.retrofitService
+import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.DogDTOMapper
 import kotlinx.coroutines.Dispatchers;
 import kotlinx.coroutines.withContext;
 class DogRepository {
     suspend fun downloadDogs(): List<Dog> {
         return withContext(Dispatchers.IO){
-            // getFakeDogs()
             val dogListApiResponse = retrofitService.getAllDogs()
-            dogListApiResponse.data.dogs
+            val dogDTOList = dogListApiResponse.data.dogs
+            val dogDTOMapper = DogDTOMapper()
+            dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
         }
     }
 
