@@ -1,5 +1,6 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.doglist
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -7,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pi_sniffsnap_garciafernandezmarta.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogListBinding
+import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
+import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
 
 class DogListActivity : AppCompatActivity() {
 
@@ -22,6 +25,12 @@ class DogListActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
 
         val adapter = DogAdapter()
+        adapter.setOnItemClickListener {
+            // Pasamos el 'dog' a 'DogDetailActivity'
+            val intent = Intent(this, DogDetailActivity::class.java)
+            intent.putExtra(DOG_KEY, it)
+            startActivity(intent)
+        }
         recycler.adapter = adapter
 
         dogListViewModel.dogList.observe(this){

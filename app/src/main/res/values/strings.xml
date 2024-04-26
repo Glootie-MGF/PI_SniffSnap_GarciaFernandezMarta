@@ -5,4 +5,7 @@
     <string name="weight">Weight</string>
     <string name="height">Height</string>
     <string name="group">Group</string>
+    <string name="error_dog_not_found">Sorry, dog not found</string>
+    <string name="dog_index_format">#%d</string>
+    <string name="dog_life_expectancy_format">%s years</string>
 </resources>

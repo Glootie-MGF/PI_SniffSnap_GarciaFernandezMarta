@@ -2,6 +2,7 @@ package com.example.pi_sniffsnap_garciafernandezmarta.doglist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,11 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
         }
     }
 
+    private var onItemClickListener: ((Dog)-> Unit)? = null
+    fun setOnItemClickListener(onItemClickListener: (Dog)-> Unit){
+        this.onItemClickListener = onItemClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
         val binding = DogListItemBinding.inflate(LayoutInflater.from(parent.context))
         return DogViewHolder(binding)
@@ -35,6 +41,9 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(dog: Dog) { // Función encargada de pintar los perros
             binding.dogName.text = dog.name
+            binding.dogName.setOnClickListener{
+                onItemClickListener?.invoke(dog)
+            }
         }
     }
 }
