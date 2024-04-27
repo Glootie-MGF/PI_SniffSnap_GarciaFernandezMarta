@@ -47,6 +47,15 @@ class DogListActivity : AppCompatActivity() {
             status ->
 
             when(status) {
+                is ApiResponseStatus.Error -> {
+                    loadingWheel.visibility = View.GONE
+                    Toast.makeText(this, status.messageId, Toast.LENGTH_SHORT).show()
+                }
+                is ApiResponseStatus.Loading -> loadingWheel.visibility = View.VISIBLE
+                is ApiResponseStatus.Success -> loadingWheel.visibility = View.GONE
+            }
+
+            /*when(status) {
                 ApiResponseStatus.LOADING -> {
                     // Mostraremos un progressbar
                     loadingWheel.visibility = View.VISIBLE
@@ -64,7 +73,7 @@ class DogListActivity : AppCompatActivity() {
                     loadingWheel.visibility = View.GONE
                     Toast.makeText(this, "ERROR undefined status", Toast.LENGTH_SHORT).show()
                 }
-            }
+            }*/
         }
 
     }

@@ -29,13 +29,24 @@ class DogListViewModel : ViewModel() {
     private fun downloadDogs() {
         // Utilizamos corrutinas para 'traernos' los perros de internet
         viewModelScope.launch {// Aqui es donde descargamos los perros. Añadimos la dependencia en gradle de lifecycle
-            _status.value = ApiResponseStatus.LOADING
+            /*_status.value = ApiResponseStatus.LOADING
             try {
                 _dogList.value = dogRepository.downloadDogs()
                 _status.value = ApiResponseStatus.SUCCESS
             } catch (e: Exception) {
                 _status.value = ApiResponseStatus.ERROR
             }
+            _dogList.value = dogRepository.downloadDogs()
+             */
+            _status.value = ApiResponseStatus.Loading()
+            handleResponseStatus(dogRepository.downloadDogs())
         }
+    }
+
+    private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus) {
+        if (apiResponseStatus is ApiResponseStatus.Success){
+            _dogList.value = apiResponseStatus.dogList // Hará que se 'pinte' la lista de perros
+        }
+        _status.value = apiResponseStatus
     }
 }

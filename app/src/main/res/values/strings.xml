@@ -8,4 +8,6 @@
     <string name="error_dog_not_found">Sorry, dog not found</string>
     <string name="dog_index_format">#%d</string>
     <string name="dog_life_expectancy_format">%s years</string>
+    <string name="unknown_error">ERROR undefined status</string>
+    <string name="error_unknown_host_exc">ERROR no internet connection</string>
 </resources>

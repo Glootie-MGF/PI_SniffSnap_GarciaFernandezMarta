@@ -1,17 +1,29 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.doglist;
 
 import com.example.pi_sniffsnap_garciafernandezmarta.Dog;
+import com.example.pi_sniffsnap_garciafernandezmarta.R
+import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi.retrofitService
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.DogDTOMapper
 import kotlinx.coroutines.Dispatchers;
 import kotlinx.coroutines.withContext;
+import java.lang.Exception
+import java.net.UnknownHostException
+
 class DogRepository {
-    suspend fun downloadDogs(): List<Dog> {
+    suspend fun downloadDogs(): ApiResponseStatus {
         return withContext(Dispatchers.IO){
-            val dogListApiResponse = retrofitService.getAllDogs()
-            val dogDTOList = dogListApiResponse.data.dogs
-            val dogDTOMapper = DogDTOMapper()
-            dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+            try {
+                val dogListApiResponse = retrofitService.getAllDogs()
+                val dogDTOList = dogListApiResponse.data.dogs
+                val dogDTOMapper = DogDTOMapper()
+                // dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+                ApiResponseStatus.Success(dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList))
+            } catch (e: Exception){
+                ApiResponseStatus.Error(R.string.unknown_error)
+            } catch (e: UnknownHostException){
+                ApiResponseStatus.Error(R.string.error_unknown_host_exc)
+            }
         }
     }
 
