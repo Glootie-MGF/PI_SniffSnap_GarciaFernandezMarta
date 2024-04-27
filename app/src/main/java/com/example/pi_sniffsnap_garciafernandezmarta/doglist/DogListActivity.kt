@@ -3,10 +3,13 @@ package com.example.pi_sniffsnap_garciafernandezmarta.doglist
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pi_sniffsnap_garciafernandezmarta.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.R
+import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogListBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
@@ -20,6 +23,8 @@ class DogListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // val dogList = getFakeDogs()
+
+        val loadingWheel = binding.loadingWheel
 
         val recycler = binding.dogRecycler
         recycler.layoutManager = LinearLayoutManager(this)
@@ -36,6 +41,30 @@ class DogListActivity : AppCompatActivity() {
         dogListViewModel.dogList.observe(this){
             dogList ->
             adapter.submitList(dogList)
+        }
+
+        dogListViewModel.status.observe(this){
+            status ->
+
+            when(status) {
+                ApiResponseStatus.LOADING -> {
+                    // Mostraremos un progressbar
+                    loadingWheel.visibility = View.VISIBLE
+                }
+                ApiResponseStatus.ERROR -> {
+                    // Ocultar progressbar y mostrar mensaje de error
+                    loadingWheel.visibility = View.GONE
+                    Toast.makeText(this, "ERROR downloading data", Toast.LENGTH_SHORT).show()
+                }
+                ApiResponseStatus.SUCCESS -> {
+                    // Ocultar progressbar
+                    loadingWheel.visibility = View.GONE
+                }
+                else ->{
+                    loadingWheel.visibility = View.GONE
+                    Toast.makeText(this, "ERROR undefined status", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
     }

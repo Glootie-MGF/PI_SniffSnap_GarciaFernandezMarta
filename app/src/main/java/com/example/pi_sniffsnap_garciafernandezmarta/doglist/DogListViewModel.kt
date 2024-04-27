@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pi_sniffsnap_garciafernandezmarta.Dog
+import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class DogListViewModel : ViewModel() {
 
@@ -14,6 +16,10 @@ class DogListViewModel : ViewModel() {
                                     // al ViewModel por lo que creamos la siguiente variable
     val dogList: LiveData<List<Dog>> get() = _dogList
 
+    private val _status =
+        MutableLiveData<ApiResponseStatus>()
+    val status: LiveData<ApiResponseStatus> get() = _status
+
     private val dogRepository = DogRepository()
 
     init {
@@ -21,10 +27,15 @@ class DogListViewModel : ViewModel() {
     }
 
     private fun downloadDogs() {
-        // Utilizamos corrutinas para traernos los perros de internet
-        viewModelScope.launch {
-            // Aqui es donde descargamos los perros. Añadimos la dependencia en gradle de lifecycle
-            _dogList.value = dogRepository.downloadDogs()
+        // Utilizamos corrutinas para 'traernos' los perros de internet
+        viewModelScope.launch {// Aqui es donde descargamos los perros. Añadimos la dependencia en gradle de lifecycle
+            _status.value = ApiResponseStatus.LOADING
+            try {
+                _dogList.value = dogRepository.downloadDogs()
+                _status.value = ApiResponseStatus.SUCCESS
+            } catch (e: Exception) {
+                _status.value = ApiResponseStatus.ERROR
+            }
         }
     }
 }
