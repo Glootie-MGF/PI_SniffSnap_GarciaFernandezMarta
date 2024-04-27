@@ -52,11 +52,13 @@ dependencies {
     // Retrofit y Moshi
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-    //Glide para cargar imagenes de internet en un imageView (en este caso storage)
+    // Coil para cargar imagenes de internet
+    implementation("io.coil-kt:coil:2.6.0")
+    // Glide para cargar imagenes de internet en un imageView (en este caso storage)
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    //Para utilizar la galeria de imagenes
+    // Para utilizar la galeria de imagenes
     implementation("androidx.activity:activity-ktx:1.8.2")
-    //Para autenticación con google aparte del sdk
+    // Para autenticación con google aparte del sdk
     implementation("com.google.android.gms:play-services-auth-base:18.0.10")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-auth:22.3.1")
