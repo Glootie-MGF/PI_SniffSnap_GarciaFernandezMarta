@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pi_sniffsnap_garciafernandezmarta.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.R
@@ -14,6 +15,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogList
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
 
+private const val GRID_SPAN = 4
 class DogListActivity : AppCompatActivity() {
 
     private val dogListViewModel: DogListViewModel by viewModels() // Para poder instanciar un ViewModel de esta manera
@@ -27,7 +29,8 @@ class DogListActivity : AppCompatActivity() {
         val loadingWheel = binding.loadingWheel
 
         val recycler = binding.dogRecycler
-        recycler.layoutManager = LinearLayoutManager(this)
+        // recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = GridLayoutManager(this, GRID_SPAN)
 
         val adapter = DogAdapter()
         adapter.setOnItemClickListener {
