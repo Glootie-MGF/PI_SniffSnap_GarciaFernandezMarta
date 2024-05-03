@@ -1,7 +1,5 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.api
 
-import com.example.pi_sniffsnap_garciafernandezmarta.Dog
-
 /*
 enum class ApiResponseStatus {
     LOADING,

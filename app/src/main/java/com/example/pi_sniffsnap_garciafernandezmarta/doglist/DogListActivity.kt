@@ -7,9 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pi_sniffsnap_garciafernandezmarta.Dog
-import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogListBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity

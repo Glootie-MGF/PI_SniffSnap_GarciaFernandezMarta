@@ -1,4 +1,4 @@
-package com.example.pi_sniffsnap_garciafernandezmarta
+package com.example.pi_sniffsnap_garciafernandezmarta.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

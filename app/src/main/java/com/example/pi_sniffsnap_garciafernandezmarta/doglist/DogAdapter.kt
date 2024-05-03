@@ -2,12 +2,11 @@ package com.example.pi_sniffsnap_garciafernandezmarta.doglist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.pi_sniffsnap_garciafernandezmarta.Dog
+import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.DogListItemBinding
 
 class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {

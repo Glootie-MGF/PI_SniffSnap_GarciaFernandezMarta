@@ -7,7 +7,7 @@
 
         <variable
             name="dog"
-            type="com.example.pi_sniffsnap_garciafernandezmarta.Dog" />
+            type="com.example.pi_sniffsnap_garciafernandezmarta.model.Dog" />
 
     </data>
 

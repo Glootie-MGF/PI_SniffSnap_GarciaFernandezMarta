@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pi_sniffsnap_garciafernandezmarta.Dog
+import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class DogListViewModel : ViewModel() {
 

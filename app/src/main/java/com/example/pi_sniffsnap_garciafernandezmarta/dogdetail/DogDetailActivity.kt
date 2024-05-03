@@ -2,12 +2,9 @@ package com.example.pi_sniffsnap_garciafernandezmarta.dogdetail
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import coil.load
-import com.example.pi_sniffsnap_garciafernandezmarta.Dog
+import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogDetailBinding
 

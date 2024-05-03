@@ -1,16 +1,10 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.doglist;
 
-import com.example.pi_sniffsnap_garciafernandezmarta.Dog;
-import com.example.pi_sniffsnap_garciafernandezmarta.R
+import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog;
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi
-import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi.retrofitService
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.DogDTOMapper
 import com.example.pi_sniffsnap_garciafernandezmarta.api.makeNetworkCall
-import kotlinx.coroutines.Dispatchers;
-import kotlinx.coroutines.withContext;
-import java.lang.Exception
-import java.net.UnknownHostException
 
 class DogRepository {
     suspend fun downloadDogs(): ApiResponseStatus<List<Dog>> {
