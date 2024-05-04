@@ -12,6 +12,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.MainActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityLoginBinding
+import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 
 class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions, SignUpFragment.SignUpFragmentActions {
 
@@ -35,6 +36,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions, S
         viewModel.user.observe(this){
             user ->
             if (user != null){
+                User.setLoggedInUser(this, user)
                 startMainActivity()
             }
         }
@@ -42,6 +44,8 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions, S
 
     private fun startMainActivity(){
         startActivity(Intent(this, MainActivity::class.java))
+        finish() // Para cuando volvamos atrás después de haber iniciado sesión
+                // no vuelva a la pantalla de login
     }
 
     private fun showErrorDialog(messageId: Int){
