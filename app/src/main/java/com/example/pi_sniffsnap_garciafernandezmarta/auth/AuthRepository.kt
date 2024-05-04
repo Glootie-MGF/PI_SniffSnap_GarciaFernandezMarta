@@ -3,6 +3,7 @@ package com.example.pi_sniffsnap_garciafernandezmarta.auth
 
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi
+import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.LoginDTO
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.SignUpDTO
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.UserDTOMapper
 import com.example.pi_sniffsnap_garciafernandezmarta.api.makeNetworkCall
@@ -21,6 +22,22 @@ class AuthRepository {
             }
 
             val userDTO = signUpResponse.data.user
+            val userDTOMapper = UserDTOMapper()
+            userDTOMapper.fromUserDTOToUserDomain(userDTO)
+        }
+    }
+
+    suspend fun login(email: String, password: String): ApiResponseStatus<User> {
+        return makeNetworkCall {
+            val loginDTO = LoginDTO(email, password)
+
+            val loginResponse = DogsApi.retrofitService.login(loginDTO)
+
+            if (!loginResponse.isSuccess){
+                throw Exception(loginResponse.message)
+            }
+
+            val userDTO = loginResponse.data.user
             val userDTOMapper = UserDTOMapper()
             userDTOMapper.fromUserDTOToUserDomain(userDTO)
         }

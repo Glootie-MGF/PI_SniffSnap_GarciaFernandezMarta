@@ -34,4 +34,11 @@ class AuthViewModel: ViewModel() {
         }
         _status.value = apiResponseStatus
     }
+
+    fun login(email: String, password: String) {
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleResponseStatus(authRepository.login(email, password))
+        }
+    }
 }

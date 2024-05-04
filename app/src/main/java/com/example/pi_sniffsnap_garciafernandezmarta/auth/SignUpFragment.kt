@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.FragmentSignUpBinding
+import com.example.pi_sniffsnap_garciafernandezmarta.isValidEmail
 
 class SignUpFragment : Fragment() {
 
@@ -76,8 +77,9 @@ class SignUpFragment : Fragment() {
         signUpFragmentActions.onSignUpFieldsValidated(email, password, passwordConfirmation)
     }
 
-    private fun isValidEmail(email: String?): Boolean {
+/*    private fun isValidEmail(email: String?): Boolean {
         return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
-
+    Nos lo llevamos a la clase 'Utils'
+    */
 }
