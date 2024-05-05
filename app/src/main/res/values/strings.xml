@@ -27,4 +27,8 @@
     <string name="user_already_exists">User already exists</string>
     <string name="there_was_an_error">Sorry, an ERROR has occurred</string>
     <string name="wrong_user_or_password">Wrong user or password</string>
+    <string name="camera_to_take_photos">Camera to take photos</string>
+    <string name="list_of_dogs">List of dogs</string>
+    <string name="settings_icon">Settings icon</string>
+    <string name="logout">Logout</string>
 </resources>
