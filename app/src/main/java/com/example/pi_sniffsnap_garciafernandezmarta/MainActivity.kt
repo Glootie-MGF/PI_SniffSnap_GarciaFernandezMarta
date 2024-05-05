@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBinding
+import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 import com.example.pi_sniffsnap_garciafernandezmarta.settings.SettingsActivity
 
@@ -23,6 +24,14 @@ class MainActivity : AppCompatActivity() {
         binding.settingsFab.setOnClickListener{
             openSettingsActivity()
         }
+
+        binding.dogListFab.setOnClickListener{
+            openDogListActivity()
+        }
+    }
+
+    private fun openDogListActivity() {
+        startActivity(Intent(this, DogListActivity::class.java))
     }
 
     private fun openSettingsActivity() {
