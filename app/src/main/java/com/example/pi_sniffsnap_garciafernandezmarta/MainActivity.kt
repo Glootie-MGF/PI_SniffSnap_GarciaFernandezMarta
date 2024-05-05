@@ -3,6 +3,7 @@ package com.example.pi_sniffsnap_garciafernandezmarta
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiServiceInterceptor
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         if (user == null){
             openLoginActivity()
             return
+        } else {
+            ApiServiceInterceptor.setSessionToken(user.authenticationToken)
         }
 
         binding.settingsFab.setOnClickListener{
