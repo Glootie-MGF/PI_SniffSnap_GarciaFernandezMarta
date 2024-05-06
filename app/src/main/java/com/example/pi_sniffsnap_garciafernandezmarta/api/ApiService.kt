@@ -3,6 +3,7 @@ package com.example.pi_sniffsnap_garciafernandezmarta.api
 import com.example.pi_sniffsnap_garciafernandezmarta.ADD_DOG_TO_USER_URL
 import com.example.pi_sniffsnap_garciafernandezmarta.BASE_URL
 import com.example.pi_sniffsnap_garciafernandezmarta.GET_ALL_DOGS_URL
+import com.example.pi_sniffsnap_garciafernandezmarta.GET_USER_DOGS_URL
 import com.example.pi_sniffsnap_garciafernandezmarta.SIGN_UP_URL
 import com.example.pi_sniffsnap_garciafernandezmarta.SING_IN_URL
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.AddDogToUserDTO
@@ -43,6 +44,10 @@ interface ApiService {
     @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
     @POST(ADD_DOG_TO_USER_URL)
     suspend fun addDogToUser(@Body addDogToUserDTO: AddDogToUserDTO): DefaultResponse
+
+    @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
+    @GET(GET_USER_DOGS_URL)
+    suspend fun getUserDogs(): DogListApiResponse
 }
 
 object DogsApi {

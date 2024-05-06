@@ -3,6 +3,8 @@ package com.example.pi_sniffsnap_garciafernandezmarta.doglist;
 import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog;
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi
+import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi.retrofitService
+import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.AddDogToUserDTO
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.DogDTOMapper
 import com.example.pi_sniffsnap_garciafernandezmarta.api.makeNetworkCall
 
@@ -28,7 +30,25 @@ class DogRepository {
             }
         }*/
     }
+    suspend fun addDogToUser(dogId: Long): ApiResponseStatus<Any> {
+        return makeNetworkCall {
+            val addDogToUserDTO = AddDogToUserDTO(dogId)
+            val defaultResponse = retrofitService.addDogToUser(addDogToUserDTO)
 
+            if (!defaultResponse.isSuccess){
+                throw Exception(defaultResponse.message)
+            }
+        }
+    }
+
+    suspend fun getUserDogs(): ApiResponseStatus<List<Dog>> {
+        return makeNetworkCall {
+            val dogListApiResponse = DogsApi.retrofitService.getUserDogs()
+            val dogDTOList = dogListApiResponse.data.dogs
+            val dogDTOMapper = DogDTOMapper()
+            dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+        }
+    }
     // Una vez que funciona la conexión a la API para traer la lista de perros
     // no nos hace falta la siguiente función
     /*private fun getFakeDogs(): MutableList<Dog> {

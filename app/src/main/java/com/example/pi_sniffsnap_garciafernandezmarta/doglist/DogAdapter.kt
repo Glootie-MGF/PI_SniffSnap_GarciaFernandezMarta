@@ -2,6 +2,7 @@ package com.example.pi_sniffsnap_garciafernandezmarta.doglist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,11 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
         this.onItemClickListener = onItemClickListener
     }
 
+    private var onLongItemClickListener: ((Dog) -> Unit)? = null
+    fun setLongOnItemClickListener(onLongItemClickListener: (Dog) -> Unit){
+        this.onLongItemClickListener = onLongItemClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
         val binding = DogListItemBinding.inflate(LayoutInflater.from(parent.context))
         return DogViewHolder(binding)
@@ -37,12 +43,16 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
         dogViewHolder.bind(dog)
     } // Para cada perro se crea un espacio (viewholder) donde se "pintará"
 
-    inner class DogViewHolder(val binding: DogListItemBinding) :
+    inner class DogViewHolder(private val binding: DogListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(dog: Dog) { // Función encargada de pintar los perros
             // binding.dogName.text = dog.name
             binding.dogListItemLayout.setOnClickListener{
                 onItemClickListener?.invoke(dog)
+            }
+            binding.dogListItemLayout.setOnLongClickListener{
+                onLongItemClickListener?.invoke(dog)
+                true
             }
             binding.dogImage.load(dog.imageUrl)
         }

@@ -15,14 +15,29 @@ class DogListViewModel : ViewModel() {
                                     // al ViewModel por lo que creamos la siguiente variable
     val dogList: LiveData<List<Dog>> get() = _dogList
 
+    // Cambiamos el tipo <List<Dog>> por <Any> para poder reutilizar la variable
     private val _status =
-        MutableLiveData<ApiResponseStatus<List<Dog>>>()
-    val status: LiveData<ApiResponseStatus<List<Dog>>> get() = _status
+        MutableLiveData<ApiResponseStatus<Any>>()
+    val status: LiveData<ApiResponseStatus<Any>> get() = _status
 
     private val dogRepository = DogRepository()
 
     init {
-        downloadDogs()
+        // downloadDogs()
+        downloadUserDogs()
+    }
+
+    fun addDogToUser(dogId: Long){
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleAddDogToUserResponseStatus(dogRepository.addDogToUser(dogId))
+        }
+    }
+    private fun downloadUserDogs(){
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleResponseStatus(dogRepository.getUserDogs())
+        }
     }
 
     private fun downloadDogs() {
@@ -42,9 +57,17 @@ class DogListViewModel : ViewModel() {
         }
     }
 
+    @Suppress("UNCHECKED_CAST") // Para eliminar warning as castear _status
     private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus<List<Dog>>) {
         if (apiResponseStatus is ApiResponseStatus.Success){
             _dogList.value = apiResponseStatus.data // Hará que se 'pinte' la lista de perros
+        }
+        _status.value = apiResponseStatus as ApiResponseStatus<Any>
+    }
+
+    private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>){
+        if (apiResponseStatus is ApiResponseStatus.Success){
+            downloadDogs()
         }
         _status.value = apiResponseStatus
     }

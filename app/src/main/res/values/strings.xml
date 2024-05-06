@@ -31,4 +31,5 @@
     <string name="list_of_dogs">List of dogs</string>
     <string name="settings_icon">Settings icon</string>
     <string name="logout">Logout</string>
+    <string name="error_adding_dog">There was an ERROR adding dog to the collection</string>
 </resources>
