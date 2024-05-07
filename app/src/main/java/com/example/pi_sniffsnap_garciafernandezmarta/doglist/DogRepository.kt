@@ -1,5 +1,6 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.doglist;
 
+import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog;
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi
@@ -7,6 +8,8 @@ import com.example.pi_sniffsnap_garciafernandezmarta.api.DogsApi.retrofitService
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.AddDogToUserDTO
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.DogDTOMapper
 import com.example.pi_sniffsnap_garciafernandezmarta.api.makeNetworkCall
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class DogRepository {
     suspend fun downloadDogs(): ApiResponseStatus<List<Dog>> {
@@ -47,6 +50,40 @@ class DogRepository {
             val dogDTOList = dogListApiResponse.data.dogs
             val dogDTOMapper = DogDTOMapper()
             dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+        }
+    }
+
+    suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
+
+        return withContext(Dispatchers.IO) {
+            val allDogsListResponse = downloadDogs()
+            val userDogsListResponse = getUserDogs()
+
+            if (allDogsListResponse is ApiResponseStatus.Error) {
+                allDogsListResponse
+            } else if (userDogsListResponse is ApiResponseStatus.Error) {
+                userDogsListResponse
+            } else if (allDogsListResponse is ApiResponseStatus.Success &&
+                userDogsListResponse is ApiResponseStatus.Success) {
+
+                //ApiResponseStatus.Success(listOf())
+                ApiResponseStatus.Success(getCollectionList(allDogsListResponse.data,
+                    userDogsListResponse.data))
+            } else {
+                ApiResponseStatus.Error(R.string.unknown_error)
+            }
+        }
+    }
+
+    private fun getCollectionList(allDogList: List<Dog>, userDogList: List<Dog>): List<Dog> {
+
+        return allDogList.map {
+            if (userDogList.contains(it)) {
+                it
+            } else {
+                Dog(0, it.index, "", "", "", "", "",
+                    "", "", "", "") // Perro falso
+            }
         }
     }
     // Una vez que funciona la conexión a la API para traer la lista de perros

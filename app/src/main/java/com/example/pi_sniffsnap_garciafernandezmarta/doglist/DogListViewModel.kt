@@ -23,8 +23,9 @@ class DogListViewModel : ViewModel() {
     private val dogRepository = DogRepository()
 
     init {
+        // downloadUserDogs()
         // downloadDogs()
-        downloadUserDogs()
+        getDogCollection()
     }
 
     fun addDogToUser(dogId: Long){
@@ -40,6 +41,14 @@ class DogListViewModel : ViewModel() {
         }
     }
 
+    private fun getDogCollection(){
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleResponseStatus(dogRepository.getDogCollection())
+        }
+    }
+
+    // Al implementar getDogCollection, ya no necesitaremos usar este método:
     private fun downloadDogs() {
         // Utilizamos corrutinas para 'traernos' los perros de internet
         viewModelScope.launch {// Aqui es donde descargamos los perros. Añadimos la dependencia en gradle de lifecycle
@@ -67,7 +76,8 @@ class DogListViewModel : ViewModel() {
 
     private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>){
         if (apiResponseStatus is ApiResponseStatus.Success){
-            downloadDogs()
+            // downloadDogs()
+            getDogCollection()
         }
         _status.value = apiResponseStatus
     }
