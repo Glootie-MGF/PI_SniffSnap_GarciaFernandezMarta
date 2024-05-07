@@ -9,10 +9,12 @@ import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.AddDogToUserDTO
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.DogDTOMapper
 import com.example.pi_sniffsnap_garciafernandezmarta.api.makeNetworkCall
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class DogRepository {
     suspend fun downloadDogs(): ApiResponseStatus<List<Dog>> {
+
         return makeNetworkCall {
             val dogListApiResponse = DogsApi.retrofitService.getAllDogs()
             val dogDTOList = dogListApiResponse.data.dogs
@@ -34,6 +36,7 @@ class DogRepository {
         }*/
     }
     suspend fun addDogToUser(dogId: Long): ApiResponseStatus<Any> {
+
         return makeNetworkCall {
             val addDogToUserDTO = AddDogToUserDTO(dogId)
             val defaultResponse = retrofitService.addDogToUser(addDogToUserDTO)
@@ -45,6 +48,7 @@ class DogRepository {
     }
 
     suspend fun getUserDogs(): ApiResponseStatus<List<Dog>> {
+
         return makeNetworkCall {
             val dogListApiResponse = DogsApi.retrofitService.getUserDogs()
             val dogDTOList = dogListApiResponse.data.dogs
@@ -56,8 +60,11 @@ class DogRepository {
     suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
 
         return withContext(Dispatchers.IO) {
-            val allDogsListResponse = downloadDogs()
-            val userDogsListResponse = getUserDogs()
+            val allDogsListDeferred = async { downloadDogs() }
+            val userDogsListDeferred = async { getUserDogs() }
+
+            val allDogsListResponse = allDogsListDeferred.await()
+            val userDogsListResponse = userDogsListDeferred.await()
 
             if (allDogsListResponse is ApiResponseStatus.Error) {
                 allDogsListResponse
@@ -81,10 +88,10 @@ class DogRepository {
             if (userDogList.contains(it)) {
                 it
             } else {
-                Dog(0, it.index, "", "", "", "", "",
+                Dog(it.id, it.index, "", "", "", "", "",
                     "", "", "", "") // Perro falso
             }
-        }
+        }.sorted()
     }
     // Una vez que funciona la conexión a la API para traer la lista de perros
     // no nos hace falta la siguiente función
