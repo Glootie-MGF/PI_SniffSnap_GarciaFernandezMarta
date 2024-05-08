@@ -32,4 +32,7 @@
     <string name="settings_icon">Settings icon</string>
     <string name="logout">Logout</string>
     <string name="error_adding_dog">There was an ERROR adding dog to the collection</string>
+    <string name="sniffsnap_by_martagf">SniffSnap by MartaGF</string>
+    <string name="camera_permission_rationale_dialog_title">Permission necessary</string>
+    <string name="camera_permission_rationale_dialog_message">Camera permission is necessary</string>
 </resources>
