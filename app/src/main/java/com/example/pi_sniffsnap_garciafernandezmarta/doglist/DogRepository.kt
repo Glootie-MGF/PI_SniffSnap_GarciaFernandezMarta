@@ -89,7 +89,8 @@ class DogRepository {
                 it
             } else {
                 Dog(it.id, it.index, "", "", "", "", "",
-                    "", "", "", "") // Perro falso
+                    "", "", "", "",
+                    inCollection = false) // Perro falso
             }
         }.sorted()
     }
