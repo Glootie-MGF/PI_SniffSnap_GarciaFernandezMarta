@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Size
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -143,10 +144,22 @@ class MainActivity : AppCompatActivity() {
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
+            val imageAnalysis = ImageAnalysis.Builder()
+                // enable the following line if RGBA output is needed.
+                // .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+                .setTargetResolution(Size(1280, 720))
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
+            imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
+                val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+
+                imageProxy.close()
+            }
+
             // Bind use cases to camera
             cameraProvider.bindToLifecycle(
                 this, cameraSelector,
-                preview, imageCapture
+                preview, imageCapture, imageAnalysis
             )
         }, ContextCompat.getMainExecutor(this))
     }
@@ -178,6 +191,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val photoUri = outputFileResults.savedUri
+                    openPhotoImageActivity(photoUri.toString())
                 }
             })
     }
@@ -193,15 +207,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun openPhotoImageActivity (photoUri: String){
+        val intent = Intent(this, PhotoImageActivity::class.java)
+        intent.putExtra(PhotoImageActivity.PHOTO_URI_KEY, photoUri)
+        startActivity(intent)
+    }
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
