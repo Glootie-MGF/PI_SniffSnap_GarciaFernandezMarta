@@ -8,6 +8,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiServiceInterceptor
@@ -16,6 +22,9 @@ import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBin
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 import com.example.pi_sniffsnap_garciafernandezmarta.settings.SettingsActivity
+import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,35 +33,53 @@ class MainActivity : AppCompatActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                // Open Camera
+                // startCamera()
+                setupCamera()
             } else {
-                Toast.makeText(this, "You need to accept camera permission to use it", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, "You need to accept camera permission to use it",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var imageCapture: ImageCapture
+    private lateinit var cameraExecutor: ExecutorService
+    private var isCameraReady = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         title = getString(R.string.sniffsnap_by_martagf)
 
         val user = User.getLoggedInUser(this)
-        if (user == null){
+        if (user == null) {
             openLoginActivity()
             return
         } else {
             ApiServiceInterceptor.setSessionToken(user.authenticationToken)
         }
 
-        binding.settingsFab.setOnClickListener{
+        setListeners()
+        requestCameraPermission()
+    }
+
+    private fun setListeners(){
+        binding.settingsFab.setOnClickListener {
             openSettingsActivity()
         }
 
-        binding.dogListFab.setOnClickListener{
+        binding.dogListFab.setOnClickListener {
             openDogListActivity()
         }
 
-        requestCameraPermission()
+        binding.takePhotoFab.setOnClickListener {
+            if (isCameraReady){
+                takePhoto()
+            }
+        }
     }
 
     private fun openDogListActivity() {
@@ -74,7 +101,8 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
+                // startCamera()
+                setupCamera()
             }
 
             ActivityCompat.shouldShowRequestPermissionRationale(
@@ -101,4 +129,79 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
+        cameraProviderFuture.addListener({
+            // Used to bind the lifecycle of cameras to the lifecycle owner
+            val cameraProvider = cameraProviderFuture.get()
+            // Preview
+            val preview = Preview.Builder().build()
+            preview.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
+
+            // Select back camera as a default
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            // Bind use cases to camera
+            cameraProvider.bindToLifecycle(
+                this, cameraSelector,
+                preview, imageCapture
+            )
+        }, ContextCompat.getMainExecutor(this))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::cameraExecutor.isInitialized) {
+            cameraExecutor.shutdown()
+        }
+    }
+
+    private fun setupCamera() {
+        binding.cameraPreview.post {
+            imageCapture = ImageCapture.Builder()
+                .setTargetRotation(binding.cameraPreview.display.rotation)
+                .build()
+            cameraExecutor = Executors.newSingleThreadExecutor()
+            startCamera()
+            isCameraReady = true
+        } // Para asegurar que está listo el view
+    }
+
+    private fun takePhoto() {
+        val outputFileOptions = ImageCapture.OutputFileOptions.Builder(getOutputPhotoFile()).build()
+        imageCapture.takePicture(outputFileOptions, cameraExecutor,
+            object : ImageCapture.OnImageSavedCallback{
+                override fun onError(error: ImageCaptureException) {
+                    Toast.makeText(this@MainActivity, "ERROR Taking photo ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    val photoUri = outputFileResults.savedUri
+                }
+            })
+    }
+
+    private fun getOutputPhotoFile(): File {
+        val mediaDir = externalMediaDirs.firstOrNull()?.let {
+            File(it, resources.getString(R.string.app_name) + ".jpg").apply { mkdirs() }
+        }
+        return if (mediaDir != null && mediaDir.exists()) {
+            mediaDir
+        } else {
+            filesDir
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
