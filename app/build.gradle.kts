@@ -73,6 +73,9 @@ dependencies {
     // Para navegar entre fragments
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    // Machine Learning - TensorFlow Lite
+    implementation("org.tensorflow:tensorflow-lite:0.0.0-nightly-SNAPSHOT")
+    implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

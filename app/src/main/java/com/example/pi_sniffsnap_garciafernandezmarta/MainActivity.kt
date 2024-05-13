@@ -3,6 +3,7 @@ package com.example.pi_sniffsnap_garciafernandezmarta
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Size
@@ -21,8 +22,10 @@ import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiServiceInterceptor
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
+import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.Classifier
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 import com.example.pi_sniffsnap_garciafernandezmarta.settings.SettingsActivity
+import org.tensorflow.lite.support.common.FileUtil
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -47,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageCapture: ImageCapture
     private lateinit var cameraExecutor: ExecutorService
     private var isCameraReady = false
+    private lateinit var classifier: Classifier
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,6 +168,13 @@ class MainActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
+    override fun onStart() {
+        super.onStart()
+        classifier = Classifier(
+            FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
+            FileUtil.loadLabels(this@MainActivity, LABEL_PATH)
+        )
+    }
     override fun onDestroy() {
         super.onDestroy()
         if (::cameraExecutor.isInitialized) {
@@ -187,10 +198,22 @@ class MainActivity : AppCompatActivity() {
         imageCapture.takePicture(outputFileOptions, cameraExecutor,
             object : ImageCapture.OnImageSavedCallback{
                 override fun onError(error: ImageCaptureException) {
-                    Toast.makeText(this@MainActivity, "ERROR Taking photo ${error.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "ERROR Taking photo ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val photoUri = outputFileResults.savedUri
+                    /*val classifier = Classifier(
+                        FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
+                        FileUtil.loadLabels(this@MainActivity, LABEL_PATH)
+                    )*/
+
+                    val bitmap = BitmapFactory.decodeFile(photoUri?.path)
+                    classifier.recognizeImage(bitmap)
+
                     openPhotoImageActivity(photoUri.toString())
                 }
             })
@@ -212,13 +235,5 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(PhotoImageActivity.PHOTO_URI_KEY, photoUri)
         startActivity(intent)
     }
-
-
-
-
-
-
-
-
 
 }
