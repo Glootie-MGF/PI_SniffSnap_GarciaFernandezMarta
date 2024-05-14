@@ -1,4 +1,4 @@
-package com.example.pi_sniffsnap_garciafernandezmarta
+package com.example.pi_sniffsnap_garciafernandezmarta.main
 
 import android.Manifest
 import android.content.Intent
@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Size
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -18,11 +20,19 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.pi_sniffsnap_garciafernandezmarta.LABEL_PATH
+import com.example.pi_sniffsnap_garciafernandezmarta.MODEL_PATH
+import com.example.pi_sniffsnap_garciafernandezmarta.PhotoImageActivity
+import com.example.pi_sniffsnap_garciafernandezmarta.R
+import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiServiceInterceptor
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBinding
+import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
+import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.Classifier
+import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 import com.example.pi_sniffsnap_garciafernandezmarta.settings.SettingsActivity
 import org.tensorflow.lite.support.common.FileUtil
@@ -51,6 +61,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private var isCameraReady = false
     private lateinit var classifier: Classifier
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +79,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         setListeners()
+
+        viewModel.status.observe(this){
+                status ->
+
+            when(status) {
+                is ApiResponseStatus.Error -> {
+                    binding.loadingWheel.visibility = View.GONE
+                    Toast.makeText(this, status.messageId, Toast.LENGTH_SHORT).show()
+                }
+                is ApiResponseStatus.Loading -> binding.loadingWheel.visibility = View.VISIBLE
+                is ApiResponseStatus.Success -> binding.loadingWheel.visibility = View.GONE
+            }
+        }
+        viewModel.dog.observe(this){
+            dog ->
+            if (dog != null){
+                openDogDetailActivity(dog)
+            }
+        }
+
         requestCameraPermission()
+    }
+
+    private fun openDogDetailActivity(dog: Dog) {
+        val intent = Intent(this, DogDetailActivity::class.java)
+        intent.putExtra(DOG_KEY, dog)
+        startActivity(intent)
     }
 
     private fun setListeners(){
@@ -212,9 +249,13 @@ class MainActivity : AppCompatActivity() {
                     )*/
 
                     val bitmap = BitmapFactory.decodeFile(photoUri?.path)
-                    classifier.recognizeImage(bitmap)
+                    // classifier.recognizeImage(bitmap)
+                    val dogRecognition = classifier.recognizeImage(bitmap)
+                        .first() // Al estar ordenados ya, nos quedamos con el 1º que es el que más fiabilidad tiene
 
-                    openPhotoImageActivity(photoUri.toString())
+                    // openPhotoImageActivity(photoUri.toString())
+                    // Ya no queremos que abra esta Activity, sino la ficha de detalles de la raza del perro detectado
+                    viewModel.getDogByMlId(dogRecognition.id) // Para descargar el perro
                 }
             })
     }
@@ -235,5 +276,4 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(PhotoImageActivity.PHOTO_URI_KEY, photoUri)
         startActivity(intent)
     }
-
 }

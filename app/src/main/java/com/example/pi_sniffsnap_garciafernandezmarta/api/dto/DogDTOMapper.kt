@@ -5,7 +5,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 // Clase encargada de convertir el DogDTO en Dog y viceversa
 class DogDTOMapper {
 
-    private fun fromDogDTOToDogDomain(dogDTO: DogDTO): Dog {
+    fun fromDogDTOToDogDomain(dogDTO: DogDTO): Dog {
         return Dog(
             dogDTO.id,
             dogDTO.index,

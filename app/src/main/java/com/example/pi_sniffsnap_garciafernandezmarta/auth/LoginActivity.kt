@@ -3,12 +3,11 @@ package com.example.pi_sniffsnap_garciafernandezmarta.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import com.example.pi_sniffsnap_garciafernandezmarta.MainActivity
+import com.example.pi_sniffsnap_garciafernandezmarta.main.MainActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityLoginBinding

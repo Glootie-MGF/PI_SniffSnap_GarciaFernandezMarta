@@ -94,6 +94,18 @@ class DogRepository {
             }
         }.sorted()
     }
+
+    suspend fun getDogByMlId(mlDogId: String): ApiResponseStatus<Dog> {
+
+        return makeNetworkCall {
+            val response = retrofitService.getDogByMlId(mlDogId)
+            if (!response.isSuccess) {
+                throw Exception(response.message)
+            }
+            val dogDTOMapper = DogDTOMapper()
+            dogDTOMapper.fromDogDTOToDogDomain(response.data.dog)
+        }
+    }
     // Una vez que funciona la conexión a la API para traer la lista de perros
     // no nos hace falta la siguiente función
     /*private fun getFakeDogs(): MutableList<Dog> {
