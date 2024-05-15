@@ -36,6 +36,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
+import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.IS_RECOGNITION_KEY
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.Classifier
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.DogRecognition
@@ -113,6 +114,7 @@ class MainActivity : AppCompatActivity() {
     private fun openDogDetailActivity(dog: Dog) {
         val intent = Intent(this, DogDetailActivity::class.java)
         intent.putExtra(DOG_KEY, dog)
+        intent.putExtra(IS_RECOGNITION_KEY, true)
         startActivity(intent)
     }
 
@@ -298,11 +300,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openPhotoImageActivity (photoUri: String){
+    private fun openPhotoImageActivity(photoUri: String) {
         val intent = Intent(this, PhotoImageActivity::class.java)
         intent.putExtra(PhotoImageActivity.PHOTO_URI_KEY, photoUri)
         startActivity(intent)
-    }
+    } // No lo vamos a utilizar una vez implementado que se vaya a la pantalla de detalles
+    // directamente después de echar la foto y reconocer la raza
 
     @SuppressLint("UnsafeOptInUsageError")
     private fun convertImageProxyToBitmap(imageProxy: ImageProxy): Bitmap? {
