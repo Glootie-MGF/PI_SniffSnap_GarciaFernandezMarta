@@ -1,9 +1,14 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageFormat
+import android.graphics.Rect
+import android.graphics.YuvImage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Size
@@ -16,6 +21,7 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -32,10 +38,12 @@ import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.Classifier
+import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.DogRecognition
 import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 import com.example.pi_sniffsnap_garciafernandezmarta.settings.SettingsActivity
 import org.tensorflow.lite.support.common.FileUtil
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -194,15 +202,32 @@ class MainActivity : AppCompatActivity() {
             imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
                 val rotationDegrees = imageProxy.imageInfo.rotationDegrees
 
+                val bitmap = convertImageProxyToBitmap(imageProxy)
+                if (bitmap != null){
+                    val dogRecognition = classifier.recognizeImage(bitmap)
+                        .first()
+                    enableTakePhotoButton(dogRecognition)
+                }
                 imageProxy.close()
             }
-
             // Bind use cases to camera
             cameraProvider.bindToLifecycle(
                 this, cameraSelector,
                 preview, imageCapture, imageAnalysis
             )
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun enableTakePhotoButton(dogRecognition: DogRecognition) {
+        if (dogRecognition.confidence > 70.0){
+            binding.takePhotoFab.alpha = 1f
+            binding.takePhotoFab.setOnClickListener {
+                viewModel.getDogByMlId(dogRecognition.id)
+            }
+        } else { // Botón deshabilitado
+            binding.takePhotoFab.alpha = 0.2f
+            binding.takePhotoFab.setOnClickListener(null)
+        }
     }
 
     override fun onStart() {
@@ -255,7 +280,9 @@ class MainActivity : AppCompatActivity() {
 
                     // openPhotoImageActivity(photoUri.toString())
                     // Ya no queremos que abra esta Activity, sino la ficha de detalles de la raza del perro detectado
-                    viewModel.getDogByMlId(dogRecognition.id) // Para descargar el perro
+
+                    viewModel.getDogByMlId(dogRecognition.id) // Para descargar el perro - No lo vamos a necesitar
+                                                                // una vez implementado el analizador antes de tomar la foto
                 }
             })
     }
@@ -275,5 +302,34 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, PhotoImageActivity::class.java)
         intent.putExtra(PhotoImageActivity.PHOTO_URI_KEY, photoUri)
         startActivity(intent)
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    private fun convertImageProxyToBitmap(imageProxy: ImageProxy): Bitmap? {
+        val image = imageProxy.image ?: return null
+
+        val yBuffer = image.planes[0].buffer // Y
+        val uBuffer = image.planes[1].buffer // U
+        val vBuffer = image.planes[2].buffer // V
+
+        val ySize = yBuffer.remaining()
+        val uSize = uBuffer.remaining()
+        val vSize = vBuffer.remaining()
+
+        val nv21 = ByteArray(ySize + uSize + vSize)
+
+        //U and V are swapped
+        yBuffer.get(nv21, 0, ySize)
+        vBuffer.get(nv21, ySize, vSize)
+        uBuffer.get(nv21, ySize + vSize, uSize)
+
+        val yuvImage = YuvImage(nv21, ImageFormat.NV21, image.width, image.height, null)
+        val out = ByteArrayOutputStream()
+        yuvImage.compressToJpeg(
+            Rect(0, 0, yuvImage.width, yuvImage.height), 100, out
+        )
+        val imageBytes = out.toByteArray()
+
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }
