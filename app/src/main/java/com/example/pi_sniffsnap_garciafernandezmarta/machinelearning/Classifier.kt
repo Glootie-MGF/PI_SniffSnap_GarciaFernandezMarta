@@ -127,4 +127,5 @@ class Classifier (tfLiteModel: MappedByteBuffer, private val labels: List<String
 
         return recognitions
     }
+
 }

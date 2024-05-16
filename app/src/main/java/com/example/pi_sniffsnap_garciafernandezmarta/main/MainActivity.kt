@@ -107,6 +107,9 @@ class MainActivity : AppCompatActivity() {
                 openDogDetailActivity(dog)
             }
         }
+        viewModel.dogRecognition.observe(this){
+            enableTakePhotoButton(it)
+        }
 
         requestCameraPermission()
     }
@@ -204,13 +207,14 @@ class MainActivity : AppCompatActivity() {
             imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
                 val rotationDegrees = imageProxy.imageInfo.rotationDegrees
 
-                val bitmap = convertImageProxyToBitmap(imageProxy)
+                /*val bitmap = convertImageProxyToBitmap(imageProxy)
                 if (bitmap != null){
                     val dogRecognition = classifier.recognizeImage(bitmap)
                         .first()
                     enableTakePhotoButton(dogRecognition)
-                }
-                imageProxy.close()
+                }*/
+                viewModel.recognizeImage(imageProxy)
+                // imageProxy.close() // No se puede cerrar ya aquí porque recognizeImage se ejecuta en un thread diferente
             }
             // Bind use cases to camera
             cameraProvider.bindToLifecycle(
@@ -234,7 +238,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        classifier = Classifier(
+        viewModel.setupClassifier(
             FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
             FileUtil.loadLabels(this@MainActivity, LABEL_PATH)
         )
@@ -307,32 +311,4 @@ class MainActivity : AppCompatActivity() {
     } // No lo vamos a utilizar una vez implementado que se vaya a la pantalla de detalles
     // directamente después de echar la foto y reconocer la raza
 
-    @SuppressLint("UnsafeOptInUsageError")
-    private fun convertImageProxyToBitmap(imageProxy: ImageProxy): Bitmap? {
-        val image = imageProxy.image ?: return null
-
-        val yBuffer = image.planes[0].buffer // Y
-        val uBuffer = image.planes[1].buffer // U
-        val vBuffer = image.planes[2].buffer // V
-
-        val ySize = yBuffer.remaining()
-        val uSize = uBuffer.remaining()
-        val vSize = vBuffer.remaining()
-
-        val nv21 = ByteArray(ySize + uSize + vSize)
-
-        //U and V are swapped
-        yBuffer.get(nv21, 0, ySize)
-        vBuffer.get(nv21, ySize, vSize)
-        uBuffer.get(nv21, ySize + vSize, uSize)
-
-        val yuvImage = YuvImage(nv21, ImageFormat.NV21, image.width, image.height, null)
-        val out = ByteArrayOutputStream()
-        yuvImage.compressToJpeg(
-            Rect(0, 0, yuvImage.width, yuvImage.height), 100, out
-        )
-        val imageBytes = out.toByteArray()
-
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-    }
 }
