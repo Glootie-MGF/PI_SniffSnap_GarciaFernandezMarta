@@ -12,6 +12,7 @@
         <item name="colorSecondaryVariant">@color/colorSecondaryDark</item>
         <item name="colorOnSecondary">@color/black</item>
     </style>
+
     <style name="DetailSectionName">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">sans-serif</item>
