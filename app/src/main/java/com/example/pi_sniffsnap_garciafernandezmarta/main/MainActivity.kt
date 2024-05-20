@@ -26,6 +26,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import coil.annotation.ExperimentalCoilApi
 import com.example.pi_sniffsnap_garciafernandezmarta.LABEL_PATH
 import com.example.pi_sniffsnap_garciafernandezmarta.MODEL_PATH
 import com.example.pi_sniffsnap_garciafernandezmarta.PhotoImageActivity
@@ -37,6 +38,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBin
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.IS_RECOGNITION_KEY
+import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailComposeActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.Classifier
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.DogRecognition
@@ -48,7 +50,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-
+@ExperimentalCoilApi
 class MainActivity : AppCompatActivity() {
 
     private val requestPermissionLauncher =
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 setupCamera()
             } else {
                 Toast.makeText(
-                    this, "You need to accept camera permission to use it",
+                    this, getString(R.string.accept_camera_permission),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -115,9 +117,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openDogDetailActivity(dog: Dog) {
-        val intent = Intent(this, DogDetailActivity::class.java)
-        intent.putExtra(DOG_KEY, dog)
-        intent.putExtra(IS_RECOGNITION_KEY, true)
+        // Modificamos DogDetailActivity por DogDetailComposeActivity
+        val intent = Intent(this, DogDetailComposeActivity::class.java)
+        intent.putExtra(DogDetailComposeActivity.DOG_KEY, dog)
+        intent.putExtra(DogDetailComposeActivity.IS_RECOGNITION_KEY, true)
         startActivity(intent)
     }
 

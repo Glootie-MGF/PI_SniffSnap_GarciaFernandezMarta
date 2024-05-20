@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
@@ -37,7 +34,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 
 @ExperimentalCoilApi
 @Composable
-fun DogDetailScreen() {
+fun DogDetailScreen(dog: Dog) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -45,41 +42,30 @@ fun DogDetailScreen() {
             .padding(start = 8.dp, end = 8.dp, bottom = 16.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-    }
-    val dog = Dog(
+
+/*    val dog = Dog(
         1L, 78, "Pug", "Herding", "70", "75",
         "https://firebasestorage.googleapis.com/v0/b/perrodex-app.appspot.com/o/dog_details_images%2Fn02110958-pug.png?alt=media&token=67506afd-86bc-45d9-b1e0-d7cd6ab2c874",
         "10 - 12", "Friendly", "5", "6"
-    )
-    DogInformation(dog)
-    Image(
-        modifier = Modifier
-            .width(270.dp)
-            .padding(top = 80.dp),
-        painter = rememberImagePainter(dog.imageUrl),
-        contentDescription = dog.name
-    )
-    /*FloatingActionButton(
-        onClick = {
+    )*/
+        DogInformation(dog)
+        Image(
+            modifier = Modifier
+                .width(270.dp)
+                .padding(top = 80.dp),
+            painter = rememberImagePainter(dog.imageUrl),
+            contentDescription = dog.name
+        )
 
-        },modifier = Modifier
-            .align(alignment = Alignment.BottomCenter)
-            //modificador align no es aplicable directamente a este tipo de componente
-    ) {
-        Icon(imageVector = Icons.Filled.Check, contentDescription = "")
-    }*/
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
         FloatingActionButton(
-            onClick = { /* TODO */ },
-            modifier = Modifier.align(alignment = Alignment.BottomCenter)
-                .padding(bottom = 8.dp)
+            modifier = Modifier
+                .align(alignment = Alignment.BottomCenter)
+                .padding(bottom = 8.dp),
+            onClick = {  }
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "")
         }
     }
-
 }
 
 @Composable
@@ -284,8 +270,14 @@ private fun DogDataColumn(
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
 fun DogDetailScreenPreview() {
-    DogDetailScreen()
+    val dog = Dog(
+        1L, 78, "Pug", "Herding", "70", "75",
+        "https://firebasestorage.googleapis.com/v0/b/perrodex-app.appspot.com/o/dog_details_images%2Fn02110958-pug.png?alt=media&token=67506afd-86bc-45d9-b1e0-d7cd6ab2c874",
+        "10 - 12", "Friendly", "5", "6"
+    )
+    DogDetailScreen(dog)
 }

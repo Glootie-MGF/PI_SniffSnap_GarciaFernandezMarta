@@ -7,15 +7,18 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import coil.annotation.ExperimentalCoilApi
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogListBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
-
+import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailComposeActivity
+@ExperimentalCoilApi
 private const val GRID_SPAN = 4
 class DogListActivity : AppCompatActivity() {
 
     private val dogListViewModel: DogListViewModel by viewModels() // Para poder instanciar un ViewModel de esta manera
+    @OptIn(ExperimentalCoilApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityDogListBinding.inflate(layoutInflater)
@@ -32,8 +35,9 @@ class DogListActivity : AppCompatActivity() {
         val adapter = DogAdapter()
         adapter.setOnItemClickListener {
             // Pasamos el 'dog' a 'DogDetailActivity'
-            val intent = Intent(this, DogDetailActivity::class.java)
-            intent.putExtra(DOG_KEY, it)
+            // Modificamos DogDetailActivity por DogDetailComposeActivity
+            val intent = Intent(this, DogDetailComposeActivity::class.java)
+            intent.putExtra(DogDetailComposeActivity.DOG_KEY, it)
             startActivity(intent)
         }
 

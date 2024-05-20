@@ -36,4 +36,5 @@
     <string name="camera_permission_rationale_dialog_message">Camera permission is necessary</string>
     <string name="content_description_whole_image">Photo that the user just took</string>
     <string name="title_activity_dog_detail_compose">DogDetailComposeActivity</string>
+    <string name="accept_camera_permission">You need to accept camera permission to use it</string>
 </resources>
