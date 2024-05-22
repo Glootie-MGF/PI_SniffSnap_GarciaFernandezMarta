@@ -35,9 +35,9 @@ class DogListActivity : AppCompatActivity() {
         val adapter = DogAdapter()
         adapter.setOnItemClickListener {
             // Pasamos el 'dog' a 'DogDetailActivity'
-            // Modificamos DogDetailActivity por DogDetailComposeActivity
-            val intent = Intent(this, DogDetailComposeActivity::class.java)
-            intent.putExtra(DogDetailComposeActivity.DOG_KEY, it)
+            // Modificamos DogDetailActivity por DogDetailComposeActivity para usar Jetpack Compose
+            val intent = Intent(this, DogDetailActivity::class.java)
+            intent.putExtra(DOG_KEY, it)
             startActivity(intent)
         }
 

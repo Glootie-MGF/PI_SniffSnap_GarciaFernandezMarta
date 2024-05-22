@@ -118,9 +118,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun openDogDetailActivity(dog: Dog) {
         // Modificamos DogDetailActivity por DogDetailComposeActivity
-        val intent = Intent(this, DogDetailComposeActivity::class.java)
-        intent.putExtra(DogDetailComposeActivity.DOG_KEY, dog)
-        intent.putExtra(DogDetailComposeActivity.IS_RECOGNITION_KEY, true)
+        val intent = Intent(this, DogDetailActivity::class.java)
+        intent.putExtra(DOG_KEY, dog)
+        intent.putExtra(IS_RECOGNITION_KEY, true)
         startActivity(intent)
     }
 
