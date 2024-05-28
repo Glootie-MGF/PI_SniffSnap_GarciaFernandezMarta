@@ -38,4 +38,5 @@
     <string name="title_activity_dog_detail_compose">DogDetailComposeActivity</string>
     <string name="accept_camera_permission">You need to accept camera permission to use it</string>
     <string name="favorite_dog">Favorite Dog</string>
+    <string name="logo">Login Logo</string>
 </resources>

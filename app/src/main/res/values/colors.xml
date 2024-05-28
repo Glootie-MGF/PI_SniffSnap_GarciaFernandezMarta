@@ -11,11 +11,16 @@
     <color name="text_black">#212121</color>
     <color name="divider">#ABABAB</color>
     <color name="dark_gray">#717171</color>
-    <color name="color_primary">#F44336</color>
-    <color name="colorPrimaryDark">#D32F2F</color>
-    <color name="colorAccent">#FFFF00</color>
+    <color name="color_primary2">#F44336</color>
+    <color name="colorPrimaryDark2">#D32F2F</color>
     <color name="colorSecondary">#142CC6</color>
     <color name="colorSecondaryDark">#0C1D8A</color>
     <color name="light_gray">#BCBCBC</color>
     <color name="light_red">#FFBABA</color>
+
+    <color name="color_primary">#FDBF01</color>
+    <color name="colorPrimaryDark">#FEAC00</color>
+    <color name="colorAccent">#FFFF00</color>
+
+
 </resources>

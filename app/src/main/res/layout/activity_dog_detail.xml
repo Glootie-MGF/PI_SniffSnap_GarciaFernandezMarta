@@ -88,7 +88,7 @@
                             android:indeterminate="false"
                             android:max="10"
                             android:progress="10"
-                            android:progressTint="@color/color_primary" />
+                            android:progressTint="@color/color_primary2" />
 
                         <ImageView
                             android:id="@+id/hearth_icon"
