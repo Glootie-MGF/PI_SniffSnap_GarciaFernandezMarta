@@ -89,6 +89,8 @@ dependencies {
     // Machine Learning - TensorFlow Lite
     implementation("org.tensorflow:tensorflow-lite:2.4.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
+    // Animaciones
+    implementation("com.airbnb.android:lottie:6.4.0")
 
     // Jetpack Compose
     implementation ("androidx.compose.ui:ui:1.6.7")
