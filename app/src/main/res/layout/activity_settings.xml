@@ -7,11 +7,12 @@
 
     </data>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".SettingsActivity">
 
+        <!-- Animación Lottie -->
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"
             android:layout_width="203dp"
@@ -20,13 +21,56 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/animation" />
 
+        <!-- Botón para Perros Favoritos -->
+        <Button
+            android:id="@+id/favorites_button"
+            android:layout_width="154dp"
+            android:layout_height="64dp"
+            android:layout_below="@id/animationView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="-148dp"
+            android:layout_marginEnd="23dp"
+            android:layout_toEndOf="@+id/animationView"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="Favoritos"
+            android:textColor="@android:color/white" />
+
+        <!-- Ícono de Huella -->
+
+        <!-- Ícono de Interrogación para Información del Desarrollador -->
+
+        <ImageView
+            android:id="@+id/huella_icon"
+            android:layout_width="112dp"
+            android:layout_height="99dp"
+            android:layout_above="@+id/logout_button"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="13dp"
+            android:layout_marginBottom="49dp"
+            android:src="@drawable/ic_baseline_list"
+            app:tint="@color/light_gray" />
+
+        <ImageButton
+            android:id="@+id/developer_info_icon"
+            android:layout_width="89dp"
+            android:layout_height="83dp"
+            android:layout_above="@+id/logout_button"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="41dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_question_mark"
+            app:tint="@color/teal_700" />
+
+        <!-- Botón de Cerrar Sesión -->
         <Button
             android:id="@+id/logout_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
             android:backgroundTint="@color/colorPrimaryDark2"
             android:text="@string/logout" />
-    </FrameLayout>
+    </RelativeLayout>
 </layout>
