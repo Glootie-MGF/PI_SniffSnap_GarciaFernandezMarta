@@ -39,4 +39,6 @@
     <string name="accept_camera_permission">You need to accept camera permission to use it</string>
     <string name="favorite_dog">Favorite Dog</string>
     <string name="logo">Login Logo</string>
+    <string name="error_sign_in_google">ERROR Signing in Google</string>
+    <string name="user_cancelled">User cancelled</string>
 </resources>
