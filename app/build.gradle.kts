@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -68,7 +69,7 @@ dependencies {
     // Coil para cargar imagenes de Internet
     implementation("io.coil-kt:coil:2.6.0")
     implementation("io.coil-kt:coil-compose:1.3.1")
-    // Glide para cargar imagenes de internet en un imageView (en este caso storage)
+    // Glide para cargar imagenes de internet en un imageView
     implementation("com.github.bumptech.glide:glide:4.16.0")
     // Para utilizar la galeria de imagenes
     implementation("androidx.activity:activity-ktx:1.9.0")

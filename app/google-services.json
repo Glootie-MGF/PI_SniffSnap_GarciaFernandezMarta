@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "141506612995",
+    "project_id": "pi-sniffsnap",
+    "storage_bucket": "pi-sniffsnap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141506612995:android:94722f42cdff2090326336",
+        "android_client_info": {
+          "package_name": "com.example.pi_sniffsnap_garciafernandezmarta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141506612995-qnbheekan9i6cl3i31d8hifpp730knvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp6HlHDU1NauIIsZcAsXzkozyEmRKTqqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141506612995-qnbheekan9i6cl3i31d8hifpp730knvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

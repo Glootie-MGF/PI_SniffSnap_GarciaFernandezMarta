@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PI_SniffSnap_GarciaFernandezMarta</string>
+    <string name="app_name">SniffSnap MGF</string>
     <string name="sniffsnap_by_martagf">SniffSnap by MartaGF</string>
     <string name="female">Female</string>
     <string name="male">Male</string>
@@ -14,7 +14,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login">LOGIN</string>
     <string name="do_not_have_an_account">Do not have an account?</string>
     <string name="register">Register</string>
     <string name="confirm_password">Confirm password</string>

@@ -37,9 +37,6 @@
             android:textColor="@android:color/white" />
 
         <!-- Ícono de Huella -->
-
-        <!-- Ícono de Interrogación para Información del Desarrollador -->
-
         <ImageView
             android:id="@+id/huella_icon"
             android:layout_width="112dp"
@@ -50,7 +47,7 @@
             android:layout_marginBottom="49dp"
             android:src="@drawable/ic_baseline_list"
             app:tint="@color/light_gray" />
-
+        <!-- Ícono de Interrogación para Información del Desarrollador -->
         <ImageButton
             android:id="@+id/developer_info_icon"
             android:layout_width="89dp"
