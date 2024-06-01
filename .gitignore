@@ -35,3 +35,6 @@ output.json
 #NDK
 obj/
 .externalNativeBuild
+
+# Private Google id client
+/app/src/main/res/values/login-google.xml
