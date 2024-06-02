@@ -8,6 +8,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.SignUpDTO
 import com.example.pi_sniffsnap_garciafernandezmarta.api.dto.UserDTOMapper
 import com.example.pi_sniffsnap_garciafernandezmarta.api.makeNetworkCall
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
+import com.example.pi_sniffsnap_garciafernandezmarta.model.UserGoogle
 
 class AuthRepository {
 
