@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -16,8 +15,8 @@ import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityLoginBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
+import com.example.pi_sniffsnap_garciafernandezmarta.model.UserGoogle
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -91,6 +90,14 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions, S
                     Firebase.auth.signInWithCredential(credentials)
                         .addOnCompleteListener(this) { signInTask ->
                             if (signInTask.isSuccessful) {
+                                // obtener el usuario actual de Firebase y guardar su información
+                                val firebaseUser = Firebase.auth.currentUser
+                                val userGoogle = UserGoogle(
+                                    uid = firebaseUser?.uid ?: "",
+                                    email = firebaseUser?.email ?: "",
+                                    idToken = account.idToken ?: ""
+                                )
+                                UserGoogle.setLoggedInUser(this, userGoogle)
                                 startMainActivity()
                             } else {
                                 Log.e("GoogleSignIn", "Error en el inicio de sesión con Google", signInTask.exception)

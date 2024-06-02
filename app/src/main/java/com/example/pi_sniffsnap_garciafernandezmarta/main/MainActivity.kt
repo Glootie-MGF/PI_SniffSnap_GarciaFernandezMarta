@@ -44,6 +44,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.Classifier
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.DogRecognition
 import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
+import com.example.pi_sniffsnap_garciafernandezmarta.model.UserGoogle
 import com.example.pi_sniffsnap_garciafernandezmarta.settings.SettingsActivity
 import org.tensorflow.lite.support.common.FileUtil
 import java.io.ByteArrayOutputStream
@@ -81,12 +82,14 @@ class MainActivity : AppCompatActivity() {
 
         title = getString(R.string.sniffsnap_by_martagf)
 
-        val user = User.getLoggedInUser(this)
+        // val user = User.getLoggedInUser(this)
+        val user = User.getLoggedInUser(this) ?: UserGoogle.getLoggedInUser(this)
         if (user == null) {
             openLoginActivity()
             return
         } else {
-            ApiServiceInterceptor.setSessionToken(user.authenticationToken)
+            // ApiServiceInterceptor.setSessionToken(user.authenticationToken)
+            ApiServiceInterceptor.setSessionToken((user as? User)?.authenticationToken ?: (user as UserGoogle).idToken)
         }
 
         setListeners()
