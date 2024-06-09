@@ -282,7 +282,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/favorite_dog"
             android:src="@drawable/ic_star_border"
-            app:tint="@color/colorAccent" />
+            />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

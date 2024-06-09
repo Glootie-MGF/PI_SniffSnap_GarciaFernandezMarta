@@ -1,10 +1,10 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.database
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.example.pi_sniffsnap_garciafernandezmarta.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityFavoritesBinding
 
 class FavoritesActivity : AppCompatActivity() {
@@ -19,6 +19,7 @@ class FavoritesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         adapter = FavoriteDogAdapter()
+        binding.favoritesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.favoritesRecyclerView.adapter = adapter
 
         viewModel.allFavoriteDogs.observe(this, Observer { dogs ->

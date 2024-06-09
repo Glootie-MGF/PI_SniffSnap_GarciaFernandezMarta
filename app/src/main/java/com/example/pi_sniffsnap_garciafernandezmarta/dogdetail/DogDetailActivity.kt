@@ -2,19 +2,18 @@ package com.example.pi_sniffsnap_garciafernandezmarta.dogdetail
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import coil.load
-import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.database.AppDatabase
 import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoriteDogEntity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogDetailBinding
+import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import kotlinx.coroutines.launch
 
 class DogDetailActivity : AppCompatActivity() {
