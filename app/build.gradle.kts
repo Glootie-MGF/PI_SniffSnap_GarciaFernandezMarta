@@ -92,6 +92,9 @@ dependencies {
     implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
     // Animaciones
     implementation("com.airbnb.android:lottie:6.4.0")
+    // ROOM
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // Jetpack Compose
     implementation ("androidx.compose.ui:ui:1.6.7")

@@ -9,6 +9,8 @@ import coil.load
 import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
+import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoriteDogEntity
+import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoritesViewModel
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogDetailBinding
 
 class DogDetailActivity : AppCompatActivity() {
@@ -19,6 +21,7 @@ class DogDetailActivity : AppCompatActivity() {
     }
 
     private val viewModel: DogDetailViewModel by viewModels()
+    private val viewModelFav: FavoritesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,10 @@ class DogDetailActivity : AppCompatActivity() {
                 } else {
                     finish()
                 }
+            }
+            binding.buttonFavorite.setOnClickListener {
+                val favoriteDogEntity = FavoriteDogEntity(dogId = dog.id, dogName = dog.name, dogImageUrl = dog.imageUrl)
+                viewModelFav.addFavoriteDog(favoriteDogEntity)
             }
         }
     }

@@ -26,6 +26,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.room.Room
 import coil.annotation.ExperimentalCoilApi
 import com.example.pi_sniffsnap_garciafernandezmarta.LABEL_PATH
 import com.example.pi_sniffsnap_garciafernandezmarta.MODEL_PATH
@@ -34,6 +35,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiServiceInterceptor
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
+import com.example.pi_sniffsnap_garciafernandezmarta.database.AppDatabase
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
@@ -74,6 +76,12 @@ class MainActivity : AppCompatActivity() {
     private var isCameraReady = false
     private lateinit var classifier: Classifier
     private val viewModel: MainViewModel by viewModels()
+
+    // Inicializar la base de datos de Room
+    /*val db = Room.databaseBuilder(
+        applicationContext,
+        AppDatabase::class.java, "sniffsnap-database"
+    ).build()*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

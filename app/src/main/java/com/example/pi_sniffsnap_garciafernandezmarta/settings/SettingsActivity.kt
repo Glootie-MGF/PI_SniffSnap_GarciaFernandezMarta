@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
+import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoritesActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivitySettingsBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 
@@ -19,6 +20,11 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.logoutButton.setOnClickListener{
             logout()
+        }
+
+        binding.favoritesButton.setOnClickListener {
+            val intent = Intent(this, FavoritesActivity::class.java)
+            startActivity(intent)
         }
     }
 
