@@ -11,7 +11,7 @@ class FavoriteDogViewModel(application: Application) : AndroidViewModel(applicat
     val allFavoriteDogs: LiveData<List<FavoriteDogEntity>>
 
     init {
-        val favoriteDogDao = AppDatabase.getDatabase(application).favoriteDogDao
+        val favoriteDogDao = AppDatabase.getDatabase(application).favoriteDogDAO()
         repository = FavoriteDogRepository(favoriteDogDao)
         allFavoriteDogs = repository.allFavoriteDogs
     }

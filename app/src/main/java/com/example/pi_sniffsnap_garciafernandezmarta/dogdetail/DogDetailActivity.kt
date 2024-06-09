@@ -2,31 +2,41 @@ package com.example.pi_sniffsnap_garciafernandezmarta.dogdetail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
+import com.example.pi_sniffsnap_garciafernandezmarta.database.AppDatabase
 import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoriteDogEntity
-import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoritesViewModel
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogDetailBinding
+import kotlinx.coroutines.launch
 
 class DogDetailActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityDogDetailBinding
     companion object {
         const val DOG_KEY = "dog"
         const val IS_RECOGNITION_KEY = "is_recognition"
     }
 
     private val viewModel: DogDetailViewModel by viewModels()
-    private val viewModelFav: FavoritesViewModel by viewModels()
+
+    private lateinit var appDatabase: AppDatabase
+    private var isFavorite: Boolean = false
+    private lateinit var favoriteDog: FavoriteDogEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityDogDetailBinding.inflate(layoutInflater)
+        binding = ActivityDogDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        appDatabase = AppDatabase.getDatabase(this)
 
         val dog = intent?.extras?.getParcelable<Dog>(DOG_KEY)
         val isRecognition = intent?.extras?.getBoolean(IS_RECOGNITION_KEY, false) ?: false
@@ -64,10 +74,47 @@ class DogDetailActivity : AppCompatActivity() {
                     finish()
                 }
             }
+
             binding.buttonFavorite.setOnClickListener {
-                val favoriteDogEntity = FavoriteDogEntity(dogId = dog.id, dogName = dog.name, dogImageUrl = dog.imageUrl)
-                viewModelFav.addFavoriteDog(favoriteDogEntity)
+                toggleFavorite(dog)
             }
+            checkIfFavorite(dog.id)
+            /*val favoriteDog = intent.getParcelableExtra<Dog>("DOG_DATA")
+            if (favoriteDog != null) {
+                this.favoriteDog = FavoriteDogEntity(
+                    dogId = favoriteDog.id,
+                    dogName = favoriteDog.name,
+                    dogImageUrl = favoriteDog.imageUrl
+                )
+            } else {
+                Toast.makeText(this, "Dog data is not available.", Toast.LENGTH_SHORT).show()
+                finish()
+            }*/
         }
+    }
+
+    private fun toggleFavorite(dog: Dog) {
+        lifecycleScope.launch {
+            val favoriteDog = FavoriteDogEntity(dogId = dog.id, dogName = dog.name, dogImageUrl = dog.imageUrl)
+            if (isFavorite) {
+                appDatabase.favoriteDogDAO().deleteFavoriteDog(favoriteDog.dogId)
+                isFavorite = false
+            } else {
+                appDatabase.favoriteDogDAO().addFavoriteDog(favoriteDog)
+                isFavorite = true
+            }
+            updateFavoriteIcon(binding.buttonFavorite, isFavorite)
+        }
+    }
+
+    private fun checkIfFavorite(dogId: Long) {
+        appDatabase.favoriteDogDAO().getAllFavoriteDogs().observe(this, Observer { dogs ->
+            isFavorite = dogs.any { it.dogId == dogId }
+            updateFavoriteIcon(binding.buttonFavorite, isFavorite)
+        })
+    }
+
+    private fun updateFavoriteIcon(button: ImageButton, isFavorite: Boolean) {
+        button.setImageResource(if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_border)
     }
 }

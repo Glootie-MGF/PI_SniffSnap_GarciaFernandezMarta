@@ -10,6 +10,6 @@ class FavoriteDogRepository(private val favoriteDogDao: FavoriteDogDAO) {
     }
 
     suspend fun delete(favoriteDogEntity: FavoriteDogEntity) {
-        favoriteDogDao.deleteFavoriteDog(favoriteDogEntity)
+        favoriteDogDao.deleteFavoriteDog(favoriteDogEntity.dogId)
     }
 }
