@@ -9,7 +9,7 @@ import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityFavorit
 class FavoritesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFavoritesBinding
-    private val viewModel: FavoritesViewModel by viewModels()
+    private val viewModel: FavoriteDogViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
