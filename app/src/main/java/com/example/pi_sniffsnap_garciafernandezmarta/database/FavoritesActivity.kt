@@ -18,9 +18,11 @@ class FavoritesActivity : AppCompatActivity() {
         binding = ActivityFavoritesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        adapter = FavoriteDogAdapter()
+        binding.favoritesRecyclerView.adapter = adapter
+
         viewModel.allFavoriteDogs.observe(this, Observer { dogs ->
             adapter.setFavoriteDogs(dogs)
         })
-
     }
 }

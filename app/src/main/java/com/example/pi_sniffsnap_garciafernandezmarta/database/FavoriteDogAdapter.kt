@@ -17,7 +17,9 @@ class FavoriteDogAdapter : RecyclerView.Adapter<FavoriteDogAdapter.ViewHolder>()
         fun bind(favoriteDog: FavoriteDogEntity) {
             binding.textViewFavoriteDogName.text = favoriteDog.dogName
             binding.textViewFavoriteDogDetail.text = "Adorable Doggie"
-            Glide.with(itemView.context).load(favoriteDog.dogImageUrl).into(binding.imageViewFavoriteDog)
+            Glide.with(binding.imageViewFavoriteDog.context).
+            load(favoriteDog.dogImageUrl).
+            into(binding.imageViewFavoriteDog)
         }
     }
 

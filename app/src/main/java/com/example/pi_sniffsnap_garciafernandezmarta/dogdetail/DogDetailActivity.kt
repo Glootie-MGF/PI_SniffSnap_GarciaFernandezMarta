@@ -79,23 +79,13 @@ class DogDetailActivity : AppCompatActivity() {
                 toggleFavorite(dog)
             }
             checkIfFavorite(dog.id)
-            /*val favoriteDog = intent.getParcelableExtra<Dog>("DOG_DATA")
-            if (favoriteDog != null) {
-                this.favoriteDog = FavoriteDogEntity(
-                    dogId = favoriteDog.id,
-                    dogName = favoriteDog.name,
-                    dogImageUrl = favoriteDog.imageUrl
-                )
-            } else {
-                Toast.makeText(this, "Dog data is not available.", Toast.LENGTH_SHORT).show()
-                finish()
-            }*/
+            favoriteDog = FavoriteDogEntity(dogId = dog.id, dogName = dog.name, dogImageUrl = dog.imageUrl)
         }
     }
 
     private fun toggleFavorite(dog: Dog) {
         lifecycleScope.launch {
-            val favoriteDog = FavoriteDogEntity(dogId = dog.id, dogName = dog.name, dogImageUrl = dog.imageUrl)
+            //val favoriteDog = FavoriteDogEntity(dogId = dog.id, dogName = dog.name, dogImageUrl = dog.imageUrl)
             if (isFavorite) {
                 appDatabase.favoriteDogDAO().deleteFavoriteDog(favoriteDog.dogId)
                 isFavorite = false
@@ -103,18 +93,22 @@ class DogDetailActivity : AppCompatActivity() {
                 appDatabase.favoriteDogDAO().addFavoriteDog(favoriteDog)
                 isFavorite = true
             }
-            updateFavoriteIcon(binding.buttonFavorite, isFavorite)
+            updateFavoriteIcon()
         }
     }
 
     private fun checkIfFavorite(dogId: Long) {
         appDatabase.favoriteDogDAO().getAllFavoriteDogs().observe(this, Observer { dogs ->
             isFavorite = dogs.any { it.dogId == dogId }
-            updateFavoriteIcon(binding.buttonFavorite, isFavorite)
+            updateFavoriteIcon()
         })
     }
 
-    private fun updateFavoriteIcon(button: ImageButton, isFavorite: Boolean) {
-        button.setImageResource(if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_border)
+    private fun updateFavoriteIcon() {
+        if (isFavorite) {
+            binding.buttonFavorite.setImageResource(R.drawable.ic_star_filled)
+        } else {
+            binding.buttonFavorite.setImageResource(R.drawable.ic_star_border)
+        }
     }
 }
