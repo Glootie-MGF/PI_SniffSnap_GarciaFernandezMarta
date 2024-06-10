@@ -7,6 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface FavoriteDogDAO {
+    // Consultas SQL en corrutinas
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addFavoriteDog(favoriteDogEntity: FavoriteDogEntity)
 

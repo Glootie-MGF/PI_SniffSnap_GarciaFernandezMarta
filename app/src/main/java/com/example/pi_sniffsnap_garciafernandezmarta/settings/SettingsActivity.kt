@@ -2,11 +2,7 @@ package com.example.pi_sniffsnap_garciafernandezmarta.settings
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoritesActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivitySettingsBinding
@@ -24,6 +20,11 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.favoritesButton.setOnClickListener {
             val intent = Intent(this, FavoritesActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.developerInfoIcon.setOnClickListener {
+            val intent = Intent(this, AboutActivity::class.java)
             startActivity(intent)
         }
     }

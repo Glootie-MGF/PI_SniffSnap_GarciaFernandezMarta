@@ -1,15 +1,9 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.main
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageFormat
-import android.graphics.Rect
-import android.graphics.YuvImage
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Size
 import android.view.View
@@ -17,16 +11,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.room.Room
 import coil.annotation.ExperimentalCoilApi
 import com.example.pi_sniffsnap_garciafernandezmarta.LABEL_PATH
 import com.example.pi_sniffsnap_garciafernandezmarta.MODEL_PATH
@@ -35,12 +28,10 @@ import com.example.pi_sniffsnap_garciafernandezmarta.R
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiResponseStatus
 import com.example.pi_sniffsnap_garciafernandezmarta.api.ApiServiceInterceptor
 import com.example.pi_sniffsnap_garciafernandezmarta.auth.LoginActivity
-import com.example.pi_sniffsnap_garciafernandezmarta.database.AppDatabase
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityMainBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.DOG_KEY
 import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailActivity.Companion.IS_RECOGNITION_KEY
-import com.example.pi_sniffsnap_garciafernandezmarta.dogdetail.DogDetailComposeActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.doglist.DogListActivity
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.Classifier
 import com.example.pi_sniffsnap_garciafernandezmarta.machinelearning.DogRecognition
@@ -49,7 +40,6 @@ import com.example.pi_sniffsnap_garciafernandezmarta.model.User
 import com.example.pi_sniffsnap_garciafernandezmarta.model.UserGoogle
 import com.example.pi_sniffsnap_garciafernandezmarta.settings.SettingsActivity
 import org.tensorflow.lite.support.common.FileUtil
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -76,12 +66,6 @@ class MainActivity : AppCompatActivity() {
     private var isCameraReady = false
     private lateinit var classifier: Classifier
     private val viewModel: MainViewModel by viewModels()
-
-    // Inicializar la base de datos de Room
-    /*val db = Room.databaseBuilder(
-        applicationContext,
-        AppDatabase::class.java, "sniffsnap-database"
-    ).build()*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

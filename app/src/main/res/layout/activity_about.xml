@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!-- Binding variables if needed -->
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".AboutActivity"
+        android:background="@drawable/custom_background_2">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView_my_photo"
+            android:layout_width="224dp"
+            android:layout_height="234dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/my_photo"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_description"
+            android:layout_width="287dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="60dp"
+            android:text="Esta aplicación, SniffSnap, es mi proyecto fin de grado superior.\nSu propósito es ayudar a identificar razas de perros mediante reconocimiento de imágenes y proporcionar información útil sobre cada una de ellas.\n\n ¡Espero que la disfrutes!"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:elevation="4dp"
+            android:background="@drawable/detail_info_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_my_photo" />
+
+        <TextView
+            android:id="@+id/textView_project_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Desarrollado por Marta García Fernández\nGrado Superior en Desarrollo de Aplicaciones Multiplataforma\nIES Al-Ándalus (Almería)"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:elevation="4dp"
+            android:background="@drawable/detail_info_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_description" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_margin="24dp"
+            android:elevation="4dp"
+            android:src="@drawable/ic_check_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_project_info" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
