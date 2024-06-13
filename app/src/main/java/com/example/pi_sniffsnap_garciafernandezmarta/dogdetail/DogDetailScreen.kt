@@ -93,7 +93,7 @@ fun DogInformation(dog: Dog) {
                         .fillMaxWidth(),
                     text = stringResource(R.string.dog_index_format, dog.index),
                     fontSize = 32.sp,
-                    color = colorResource(id = R.color.text_black),
+                    color = colorResource(id = R.color.textColorPrimary),
                     textAlign = TextAlign.End
                 )
                 Text(
@@ -101,7 +101,7 @@ fun DogInformation(dog: Dog) {
                         .fillMaxWidth()
                         .padding(top = 32.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
                     text = dog.name,
-                    color = colorResource(id = R.color.text_black),
+                    color = colorResource(id = R.color.textColorPrimary),
                     textAlign = TextAlign.Center,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Medium
@@ -113,14 +113,14 @@ fun DogInformation(dog: Dog) {
                     stringResource(id = R.string.dog_life_expectancy_format, dog.lifeExpectancy),
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
-                    color = colorResource(id = R.color.text_black)
+                    color = colorResource(id = R.color.textColorPrimary)
                 )
 
                 Text(
                     text = dog.temperament,
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
-                    color = colorResource(id = R.color.text_black),
+                    color = colorResource(id = R.color.textColorPrimary),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(top = 8.dp)
                 )
@@ -152,7 +152,7 @@ fun DogInformation(dog: Dog) {
                             text = dog.type,
                             textAlign = TextAlign.Center,
                             fontSize = 16.sp,
-                            color = colorResource(id = R.color.text_black),
+                            color = colorResource(id = R.color.textColorPrimary),
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.padding(top = 8.dp)
                         )
@@ -236,14 +236,14 @@ private fun DogDataColumn(
         Text(
             text = genre,
             textAlign = TextAlign.Center,
-            color = colorResource(id = R.color.text_black),
+            color = colorResource(id = R.color.textColorPrimary),
             modifier = Modifier.padding(top = 8.dp)
         )
         Text(
             text = weight,
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
-            color = colorResource(id = R.color.text_black),
+            color = colorResource(id = R.color.textColorPrimary),
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -257,7 +257,7 @@ private fun DogDataColumn(
             text = height,
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
-            color = colorResource(id = R.color.text_black),
+            color = colorResource(id = R.color.textColorPrimary),
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(top = 8.dp)
         )
