@@ -1,10 +1,19 @@
 package com.example.pi_sniffsnap_garciafernandezmarta.dogdetail
 
+import android.content.ContentValues
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import coil.load
@@ -15,6 +24,9 @@ import com.example.pi_sniffsnap_garciafernandezmarta.database.FavoriteDogEntity
 import com.example.pi_sniffsnap_garciafernandezmarta.databinding.ActivityDogDetailBinding
 import com.example.pi_sniffsnap_garciafernandezmarta.model.Dog
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 class DogDetailActivity : AppCompatActivity() {
 
@@ -79,8 +91,72 @@ class DogDetailActivity : AppCompatActivity() {
             }
             checkIfFavorite(dog.id)
             favoriteDog = FavoriteDogEntity(dogId = dog.id, dogName = dog.name, dogImageUrl = dog.imageUrl)
+
+            binding.buttonShare.setOnClickListener{
+                shareScreenshot()
+            }
         }
     }
+
+    private fun shareScreenshot() {
+        val rootView = window.decorView.findViewById<View>(android.R.id.content)
+        val bitmap = getScreenShotFromView(rootView)
+
+        if (bitmap != null) {
+            saveMediaToStorage(bitmap)
+        }
+    }
+    private fun getScreenShotFromView(v: View): Bitmap? {
+        var screenshot: Bitmap? = null
+        try {
+            screenshot = Bitmap.createBitmap(v.measuredWidth, v.measuredHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(screenshot)
+            v.draw(canvas)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return screenshot
+    }
+    private fun saveMediaToStorage(bitmap: Bitmap) {
+        val filename = "${System.currentTimeMillis()}.jpg"
+        var fos: OutputStream? = null
+        var imageUri: Uri? = null
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            contentResolver?.also { resolver ->
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+
+                imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                fos = imageUri?.let { resolver.openOutputStream(it) }
+            }
+        } else {
+            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDir, filename)
+            fos = FileOutputStream(image)
+            imageUri = FileProvider.getUriForFile(this, "${applicationContext.packageName}.fileprovider", image)
+        }
+
+        fos?.use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            Toast.makeText(this, "Screenshot saved to gallery", Toast.LENGTH_SHORT).show()
+            imageUri?.let { uri ->
+                shareImage(uri)
+            }
+        }
+    }
+    private fun shareImage(imageUri: Uri) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, imageUri)
+            type = "image/jpeg"
+        }
+        startActivity(Intent.createChooser(intent, "Share via"))
+    }
+
 
     private fun toggleFavorite(dog: Dog) {
         lifecycleScope.launch {
